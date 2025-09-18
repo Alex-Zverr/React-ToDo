@@ -1,8 +1,50 @@
-import add from './assets/add.svg'
-import deletion from './assets/deletion.svg'
+import { useState } from 'react'
 import logo from './assets/logo.svg'
 import user from './assets/user.webp'
+import Card from './components/Card'
+import Form from './components/Form'
+
+export interface Task {
+	id: number
+	title: string
+	isDone: boolean
+}
+
+const tasks_data: Task[] = [
+	{
+		id: 0,
+		title: 'Просто задача для проверки работы приложения.',
+		isDone: false,
+	},
+	{
+		id: 1,
+		title: 'Новая задача для проверки работы приложения.',
+		isDone: false,
+	},
+	{
+		id: 2,
+		title: 'Новая задача для проверки работы приложения.',
+		isDone: false,
+	},
+]
+
 function App() {
+	const [tasks, setTasks] = useState<Task[]>(tasks_data)
+
+	const handleChangeTask = (id: number) => {
+		setTasks(
+			tasks.map(task =>
+				task.id === id ? { ...task, isDone: !task.isDone } : task
+			)
+		)
+	}
+
+	const handleDeleteTask = (id: number) => {
+		setTasks(tasks.filter(task => task.id !== id))
+	}
+
+	console.log(tasks)
+
 	return (
 		<>
 			<div className='flex flex-col min-h-screen py-16'>
@@ -15,29 +57,16 @@ function App() {
 							className='w-14 h-14 rounded-full'
 						/>
 					</div>
-					<div className='flex gap-4 mt-6'>
-						<input
-							type='text'
-							name='task'
-							placeholder='Введите задачу'
-							className='w-full px-6 py-4 text-gray-200 outline-hidden rounded-2xl border border-slate-600 focus:outline-hidden focus:ring-2 focus:ring-sky-500 placeholder:text-slate-500 bg-gray-700'
-						/>
-						<button className='flex items-center gap-2 cursor-pointer px-6 py-4 rounded-2xl bg-cyan-500 shadow-lg shadow-cyan-500/50 text-white hover:bg-cyan-600 transition-colors'>
-							Добавить
-							<img className='flex-shrink-0 w-5 h-5' src={add} alt='Добавить' />
-						</button>
-					</div>
+					<Form tasks={tasks} setTasks={setTasks} />
 					<div className='mt-6 flex flex-col gap-4'>
-						<div className='flex items-center gap-2 cursor-pointer py-4 px-6 border-b bg-gray-700 rounded-xl'>
-							<input type='checkbox' />
-							<span className='text-gray-200 flex-1'>
-								Integer urna interdum massa libero auctor neque turpis turpis
-								semper. Duis vel sed fames integer.
-							</span>
-							<button className='flex items-center gap-2 cursor-pointer p-3 rounded-xl bg-transparent border border-slate-600 text-white hover:bg-red-400 transition-colors'>
-								<img src={deletion} alt='Удалить' />
-							</button>
-						</div>
+						{tasks.map(task => (
+							<Card
+								key={task.id}
+								task={task}
+								changeTask={handleChangeTask}
+								deleteTask={handleDeleteTask}
+							/>
+						))}
 					</div>
 				</main>
 			</div>
