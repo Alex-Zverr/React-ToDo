@@ -58,16 +58,23 @@ function App() {
 						/>
 					</div>
 					<Form tasks={tasks} setTasks={setTasks} />
-					<div className='mt-6 flex flex-col gap-4'>
-						{tasks.map(task => (
-							<Card
-								key={task.id}
-								task={task}
-								changeTask={handleChangeTask}
-								deleteTask={handleDeleteTask}
-							/>
-						))}
-					</div>
+
+					{tasks.length === 0 ? (
+						<div className='mt-6 flex flex-col gap-4'>
+							<p className='text-gray-500 text-center'>Нет задач</p>
+						</div>
+					) : (
+						<div className='mt-6 flex flex-col gap-4'>
+							{tasks.map(task => (
+								<Card
+									key={task.id}
+									task={task}
+									changeTask={handleChangeTask}
+									deleteTask={handleDeleteTask}
+								/>
+							))}
+						</div>
+					)}
 				</main>
 			</div>
 		</>

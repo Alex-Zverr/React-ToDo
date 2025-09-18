@@ -18,7 +18,7 @@ const Form = ({
 			setTasks([
 				...tasks,
 				{
-					id: tasks[tasks.length - 1].id + 1,
+					id: tasks.length > 0 ? tasks[tasks.length - 1].id + 1 : 1,
 					title: newTask,
 					isDone: false,
 				},
